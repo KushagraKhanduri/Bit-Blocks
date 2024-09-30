@@ -1,1 +1,57 @@
+#include <Arduino_LSM9DS1.h>
+
+// Variables to store sensor data
+float accelX, accelY, accelZ;
+float gyroX, gyroY, gyroZ;
+float magX, magY, magZ;
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial);
+
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+    while (1);
+  }
+
+  Serial.println("IMU initialized successfully.");
+}
+
+void loop() {
+  // Read accelerometer data
+  if (IMU.accelerationAvailable()) {
+    IMU.readAcceleration(accelX, accelY, accelZ);
+  }
+
+  // Read gyroscope data
+  if (IMU.gyroscopeAvailable()) {
+    IMU.readGyroscope(gyroX, gyroY, gyroZ);
+  }
+
+  // Read magnetometer data
+  if (IMU.magneticFieldAvailable()) {
+    IMU.readMagneticField(magX, magY, magZ);
+  }
+
+  // Print the accelerometer data
+  Serial.print("Accelerometer (X, Y, Z): ");
+  Serial.print(accelX); Serial.print(", ");
+  Serial.print(accelY); Serial.print(", ");
+  Serial.println(accelZ);
+
+  // Print the gyroscope data
+  Serial.print("Gyroscope (X, Y, Z): ");
+  Serial.print(gyroX); Serial.print(", ");
+  Serial.print(gyroY); Serial.print(", ");
+  Serial.println(gyroZ);
+
+  // Print the magnetometer data
+  Serial.print("Magnetometer (X, Y, Z): ");
+  Serial.print(magX); Serial.print(", ");
+  Serial.print(magY); Serial.print(", ");
+  Serial.println(magZ);
+
+  Serial.println(); // Add an empty line for readability
+  delay(500); // Wait for half a second before the next reading
+}
 
